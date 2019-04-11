@@ -35,7 +35,7 @@ public class HelloWorldLambda {
 	}
 	
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
-		String request = "{\"direction\":\"MINIMIZE\", \"objectiveFunction\":\"1.0_b\", \"constraints\": [ \"1.0_a;1.0_b_c=10.0\", \"1.0_a<3.0\" ] }";
+		String request = "{\"direction\":\"MINIMIZE\", \"objectiveFunction\":\"1.0_b\", \"constraints\": [ \"1.0_a;1.0_b=10.0\", \"1.0_a<3.0\" ] }";
 		
 		AWSRequest r = new AWSRequest();
 		r.body = request;

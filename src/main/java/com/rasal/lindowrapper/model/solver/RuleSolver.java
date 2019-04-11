@@ -27,7 +27,13 @@ public class RuleSolver {
 		solveModel(nativeLindoModel);
 		Map<String, Double> solutionValues = getSolutionValuesFromLindoSolution(objectiveSpecification, nativeLindoModel);
 		
+		destroyLindoModel(nativeLindoModel);
 		return solutionValues;
+	}
+
+	private void destroyLindoModel(Object nativeLindoModel) {
+		int response = Lindo.LSdeleteModel(nativeLindoModel);
+		lindoResponseValidator.validateLindoResponse(response, "Failed to destroy model.");
 	}
 
 	private Map<String, Double> getSolutionValuesFromLindoSolution(LinearEquationsBuilder objectiveSpecification, Object nativeLindoModel) {

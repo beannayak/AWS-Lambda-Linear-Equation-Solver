@@ -4,13 +4,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-public class HelloWorldLambdaTest extends TestCase {
-	public HelloWorldLambdaTest(String testName) {
+public class RequestHandlerTest extends TestCase {
+	public RequestHandlerTest(String testName) {
 		super(testName);
 	}
 
 	public static Test suite() {
-		return new TestSuite(HelloWorldLambdaTest.class);
+		return new TestSuite(RequestHandlerTest.class);
 	}
 
 	public void testApp() {

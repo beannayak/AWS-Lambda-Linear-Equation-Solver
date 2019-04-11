@@ -23,8 +23,8 @@ import com.rasal.awslambda.errorhandling.ErrorDetail;
 import com.rasal.awslambda.errorhandling.Errors;
 import com.springmock.ReflectionAutowirer;
 
-public class HelloWorldLambda {
-	private static final Logger LOG = Logger.getLogger(HelloWorldLambda.class);
+public class RequestHandler {
+	private static final Logger LOG = Logger.getLogger(RequestHandler.class);
 	private static final OptimizationResource resource = ReflectionAutowirer.getAutowiredInstance(OptimizationResource.class);
 	private static ValidatorFactory factory;
 	private static Validator validator;
@@ -40,7 +40,7 @@ public class HelloWorldLambda {
 		AWSRequest r = new AWSRequest();
 		r.body = request;
 		
-		Response response = new HelloWorldLambda().handler(r);
+		Response response = new RequestHandler().handler(r);
 		System.out.println(response.body + ", status: " + response.statusCode);
 	}
 	

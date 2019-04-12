@@ -26,13 +26,8 @@ import com.springmock.ReflectionAutowirer;
 public class RequestHandler {
 	private static final Logger LOG = Logger.getLogger(RequestHandler.class);
 	private static final OptimizationResource resource = ReflectionAutowirer.getAutowiredInstance(OptimizationResource.class);
-	private static ValidatorFactory factory;
-	private static Validator validator;
-	
-	static {
-		factory = Validation.buildDefaultValidatorFactory();
-		validator = factory.getValidator();
-	}
+	private static ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+	private static Validator validator = factory.getValidator();
 	
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
 		String request = "{\"direction\":\"MINIMIZE\", \"objectiveFunction\":\"1.0_b\", \"constraints\": [ \"1.0_a;1.0_b=10.0\", \"1.0_a<3.0\" ] }";

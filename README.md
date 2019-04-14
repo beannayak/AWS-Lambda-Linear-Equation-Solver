@@ -5,6 +5,7 @@
 
 * A sample request:
     - Request
+    ```
     { 
 	"direction": "MINIMIZE",
 	"objectiveFunction": "1.0_b",
@@ -13,3 +14,4 @@
 		"1.0_a<5.0"
 	] 
     }
+    ```

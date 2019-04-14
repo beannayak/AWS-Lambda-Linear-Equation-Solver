@@ -27,6 +27,8 @@
 			<groupId>com.lindo</groupId>
 			<artifactId>lindo-api</artifactId>
 			<version>12.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/resources/lib/lindo12_0.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>

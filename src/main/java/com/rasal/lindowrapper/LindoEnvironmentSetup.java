@@ -3,8 +3,6 @@ package com.rasal.lindowrapper;
 import java.io.File;
 import java.lang.reflect.Field;
 
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.lindo.Lindo;
 import com.rasal.awslambda.errorhandling.LindoResponseValidator;
 import com.springmock.Autowired;
@@ -53,12 +51,15 @@ public class LindoEnvironmentSetup {
 	}
 	
 	private static String getLESolverBaseLocation() {
-		Region region = Regions.getCurrentRegion();
+		String region = System.getenv("AWS_REGION");
+		String returnedRegion;
 		if (region == null) {
-			return System.getProperty("user.dir") + "/src/main/resources/lib/LindoAPI/unix";
+			returnedRegion = System.getProperty("user.dir") + "/src/main/resources/lib/LindoAPI/unix";
 		} else {
-			return "/var/task/lib/LindoAPI/unix";
+			returnedRegion = "/var/task/lib/LindoAPI/unix";
 		}
+		
+		return returnedRegion;
 	}
 	
 	public static void addDirectoryInPath(String directoryNameWithPath) {

@@ -3,6 +3,8 @@ package com.rasal.lindowrapper;
 import java.io.File;
 import java.lang.reflect.Field;
 
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.lindo.Lindo;
 import com.rasal.awslambda.errorhandling.LindoResponseValidator;
 import com.springmock.Autowired;
@@ -11,8 +13,9 @@ import com.springmock.Component;
 @Component
 public class LindoEnvironmentSetup {
 
+	private static final String LESolverBaseLocation = getLESolverBaseLocation();
 	static {
-		addDirectoryInPath("/var/task/lib/LindoAPI/unix");
+		addDirectoryInPath(LESolverBaseLocation);
 		System.loadLibrary("lindojni");
 	}
 	
@@ -29,16 +32,33 @@ public class LindoEnvironmentSetup {
 	}
 	
 	private Object loadNativeEnvironment() {
-		StringBuffer licenseKeyHolder = new StringBuffer(10000);
-		int lindoKeyRetrievalResponse = Lindo.LSloadLicenseString("/var/task/lib/LindoAPI/unix/lndapi120.lic", licenseKeyHolder);
-		lindoResponseValidator.validateLindoResponse(lindoKeyRetrievalResponse, "License key retrieval failed!");
-		
-		int environmentCreationResponse[] = new int[1];
+		StringBuffer licenseKey = loadLicense();
+		return createEnvironment(licenseKey);
+	}
 
+	private Object createEnvironment(StringBuffer licenseKeyHolder) {
+		int environmentCreationResponse[] = new int[1];
 		Object nativeLindoEnvironment = Lindo.LScreateEnv(environmentCreationResponse, licenseKeyHolder.toString());
 		lindoResponseValidator.validateLindoCreatedObjectAndResponse(nativeLindoEnvironment, environmentCreationResponse[0], "Failed to create native LINDO environment!");
-
+		
 		return nativeLindoEnvironment;
+	}
+
+	private StringBuffer loadLicense() {
+		StringBuffer licenseKey = new StringBuffer(10000);
+		int lindoKeyRetrievalResponse = Lindo.LSloadLicenseString(LESolverBaseLocation+ "/lndapi120.lic", licenseKey);
+		lindoResponseValidator.validateLindoResponse(lindoKeyRetrievalResponse, "License key retrieval failed!");
+		
+		return licenseKey;
+	}
+	
+	private static String getLESolverBaseLocation() {
+		Region region = Regions.getCurrentRegion();
+		if (region == null) {
+			return System.getProperty("user.dir") + "/src/main/resources/lib/LindoAPI/unix";
+		} else {
+			return "/var/task/lib/LindoAPI/unix";
+		}
 	}
 	
 	public static void addDirectoryInPath(String directoryNameWithPath) {

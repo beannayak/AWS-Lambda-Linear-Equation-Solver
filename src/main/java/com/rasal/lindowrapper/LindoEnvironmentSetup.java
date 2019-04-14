@@ -12,7 +12,7 @@ import com.springmock.Component;
 public class LindoEnvironmentSetup {
 
 	static {
-		addDirInSystemPath("/var/task/lib/LindoAPI/unix");
+		addDirectoryInPath("/var/task/lib/LindoAPI/unix");
 		System.loadLibrary("lindojni");
 	}
 	
@@ -41,21 +41,21 @@ public class LindoEnvironmentSetup {
 		return nativeLindoEnvironment;
 	}
 	
-	public static void addDirInSystemPath(String s) {
+	public static void addDirectoryInPath(String directoryNameWithPath) {
 		try {
 			Field field = ClassLoader.class.getDeclaredField("usr_paths");
 			field.setAccessible(true);
 			String[] paths = (String[]) field.get(null);
 			for (String path : paths) {
-				if (s.equals(path)) {
+				if (directoryNameWithPath.equals(path)) {
 					return;
 				}
 			}
 			String[] tmp = new String[paths.length + 1];
 			System.arraycopy(paths, 0, tmp, 0, paths.length);
-			tmp[paths.length] = s;
+			tmp[paths.length] = directoryNameWithPath;
 			field.set(null, tmp);
-			System.setProperty("java.library.path", System.getProperty("java.library.path") + File.pathSeparator + s);
+			System.setProperty("java.library.path", System.getProperty("java.library.path") + File.pathSeparator + directoryNameWithPath);
 		} catch (IllegalAccessException | NoSuchFieldException e) {
 			throw new RuntimeException("Failed to get permissions to set library path");
 		}

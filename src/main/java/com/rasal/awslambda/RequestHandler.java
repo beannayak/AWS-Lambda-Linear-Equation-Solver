@@ -30,7 +30,7 @@ public class RequestHandler {
 	private static Validator validator = factory.getValidator();
 	
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
-		String request = "{\"direction\":\"MINIMIZE\", \"objectiveFunction\":\"1.0_b\", \"constraints\": [ \"1.0_a;1.0_b=10.0\", \"1.0_a<3.0\" ] }";
+		String request = "{\"direction\": [\"java.lang.String\", \"MINIMIZE\"], \"objectiveFunction\":\"1.0_b\", \"constraints\": [ \"1.0_a;1.0_b=10.0\", \"1.0_a<3.0\" ] }";
 		
 		AWSRequest r = new AWSRequest();
 		r.body = request;
@@ -50,7 +50,7 @@ public class RequestHandler {
 			APIError e1 = new APIError();
 			e1.setErrorCode(ErrorCode.UNPARSABLE_JSON.errorCode);
 			e1.setMessage(ErrorCode.UNPARSABLE_JSON.message);
-			return Response.from(400, om.writeValueAsString(new Errors(Arrays.asList(e1))));
+			return Response.from(400, om.writeValueAsString(new Errors(Arrays.asList(e1)).getErrors()));
 		}
 		
 		String validationMessage = validateAnnotations(optRequest);
